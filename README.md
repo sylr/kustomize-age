@@ -33,17 +33,68 @@ configMapGenerator:
   - ./age.key
 ```
 
-## Build
+## Example
+
+### Encrypt YAML with age
 ```shell
-$ kustomize-$(go env GOOS)-$(go env GOARCH)-xxxxxxxx build .
+# assets/config.yaml will be crypted with 2 keys
+$ age-darwin-amd64-d3cd2ad5 -R ~/.ssh/id_ed25519.pub -R ./age.pub -y assets/config.yaml | tee assets/config.yaml.age
+this-is-a-config: hehehe
+this-is-a-credential: !crypto/age:NoTag |-
+  -----BEGIN AGE ENCRYPTED FILE-----
+  YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IHNzaC1lZDI1NTE5IGYxc1ZMQSBlbTVY
+  NFBhZmpOazZFN1VWdEwyVkRwME9ZT2NlOU5XTlZlcm1SY0JXZWdJCnJxZlZGQ05j
+  b0NuWkpFTzNiNW5nVmNiVi9YWGdSc0dOd2xFNnRlMDNvQTgKLT4gWDI1NTE5IHRk
+  L1ZwSDlmZzJzVm9CeFFrTWgzRnUrUTdqTjJUdXVITWRBZ09VRk14a2sKZVArMTRz
+  amhUM0x4Q0RYMU55SmxJbW1aWkVubm94UHZhYklyUHZZZ3hUSQotLS0gbm5TejNm
+  MGtHckg3VHBTa1ovbHp5dUtnMXdPU1NQTGxMTWJOZnJjc1VZZwpQJ4yennXD9GU5
+  9RR9cIiTeQ7wr5eAQwTqoUcy2tTI7y9AykCzaA72Z06ruBrC+0gPeJrq2ZOFna4Y
+  uAVOmxQG7p8i0hZWFFe2dHLz/r0=
+  -----END AGE ENCRYPTED FILE-----
+this-is-another-config: hahaha
+```
+
+### Decrypt YAML with age
+```shell
+# assets/config.yaml.age is decrypted using ~/.ssh/id_ed25519
+$ age-darwin-amd64-d3cd2ad5 -d -y assets/config.yaml.age
+Enter passphrase for "/Users/sylr/.ssh/id_ed25519":
+this-is-a-config: hehehe
+this-is-a-credential: MyVerySecretPasswordWhichShouldNotBeClearInGit
+this-is-another-config: hahaha
+```
+
+### Kustomize build
+```shell
+$ kustomize-darwin-amd64-9cf05d72 build .
+Enter passphrase for "/Users/s.rabot/.ssh/id_ed25519":
 apiVersion: v1
 data:
   config.yaml: |
     this-is-a-config: hehehe
-    this-is-a-credential: !crypto/age |
-      MyVerySecretPasswordWhichShouldNotBeClearInGit
-    this-is-anoter-config: hahaha
+    this-is-a-credential: MyVerySecretPasswordWhichShouldNotBeClearInGit
+    this-is-another-config: hahaha
 kind: ConfigMap
 metadata:
-  name: myconfig-mdc8kgh747
+  name: myconfig-f5m5dh6844
+```
+
+### Re-key age encrypted file with a different set of keys
+```shell
+# assets/config.yaml.age is decrypted using ~/.ssh/id_ed25519 and then recrypted
+# using only the ./age.pub key
+$ age-darwin-amd64-d3cd2ad5 -d -y --yaml-discard-notag assets/config.yaml.age | \
+    age-darwin-amd64-d3cd2ad5 -R ./age.pub -y
+Enter passphrase for "/Users/sylr/.ssh/id_ed25519":
+this-is-a-config: hehehe
+this-is-a-credential: !crypto/age:NoTag |-
+  -----BEGIN AGE ENCRYPTED FILE-----
+  YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAybVI4ZEl2eVIxUnNRU2w1
+  N2xIdnhiWlVXR1hrcTlHRUI5d2d6ZVRwWlNzCjMzQzJFdGtQaUdwR3hUSUphOUhP
+  TXFmaWJacVR4SFQrYXByREp4ay9WNEkKLS0tIERNWFRvLytzUUhEaTl3WThPTDVJ
+  MTVwYmhqYzhsby9zZmY1b1hlSGJnR2MKd8nAjUkEovGVZoEtlBfe30H8zxeEY6Rd
+  FUfgKGWqjX/Zr6eOAncTKDR6Oaoyeb4PBbvS0SoBfBcBh4sbozf8YHUIuwTvkFOZ
+  fvaicZmG
+  -----END AGE ENCRYPTED FILE-----
+this-is-another-config: hahaha
 ```

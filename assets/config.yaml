@@ -1,3 +1,3 @@
 this-is-a-config: hehehe
 this-is-a-credential: !crypto/age:NoTag MyVerySecretPasswordWhichShouldNotBeClearInGit
-this-is-anoter-config: hahaha
+this-is-another-config: hahaha
