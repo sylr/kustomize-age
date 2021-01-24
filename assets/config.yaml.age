@@ -1,0 +1,11 @@
+this-is-a-config: hehehe
+this-is-a-credential: !crypto/age:NoTag |
+  -----BEGIN AGE ENCRYPTED FILE-----
+  YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IHNzaC1lZDI1NTE5IGYxc1ZMQSB3c2FL
+  QzVRc0RQdU5yS01IREpQZkszaUJmUHMvTkRmODdqZzVGZUMxNlFrClNBMDdoOVZS
+  UXhJRUNWdjV2azJTS1lQcXdnQmRzT0M1d1VBUFhGM0R6cnMKLS0tICt6a0JrdEpU
+  bFE3enVUUG11TmVXNjJiK2NyOGg5bEN4eWdxbXhrdWoybzAK1wuCmtlmdZoyDOG6
+  bH27792/uiuEkv7yRdoPAKVBs/MBWkirVMV8FVWEuLFeTENoexrIpjAlAP/jpCD+
+  hWDtu04uMdHyVXT0kUNqSj+5
+  -----END AGE ENCRYPTED FILE-----
+this-is-anoter-config: hahaha
