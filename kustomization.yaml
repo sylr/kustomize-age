@@ -7,3 +7,15 @@ configMapGenerator:
   - assets/config.yaml.age # reference to the encrypted yaml
   ageIdentities:
   - ./age.key
+- name: myconfig-env
+  literals:
+  - |-
+    FOO.age=-----BEGIN AGE ENCRYPTED FILE-----
+    YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA5T0lxeXRwU21WaktmL0tE
+    dlJXenFwN2ZxcFhJaStybFp2TXNiWHZaTVFjCkI0U21oaHB5TnQ5RkZqbzVDaThi
+    VVl3d2V6TW91SEovRUNvbkZ5VW82UmMKLS0tIEpYNmhhMis5cmRrd0l0ZXNDN3hq
+    aC85RC9rbWVOVTBXSDAzRTh0RkdVcUUKYwFjbXl9uM03A4dBTYXphD2x2Ex0ZqjQ
+    aqK+72Hpx1BoL2mJ5ncG7u/XjcTxGvivmQ==
+    -----END AGE ENCRYPTED FILE-----
+  ageIdentities:
+  - ./age.key
