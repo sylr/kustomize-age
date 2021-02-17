@@ -8,7 +8,7 @@ KUSTOMIZE_SRC       ?= $(GOPATH)/src/sigs.k8s.io/kustomize/kustomize
 KUSTOMIZE_SYLR_REPO ?= https://github.com/sylr/kustomize.git
 
 AGE_YAML_SUPPORT_COMMIT      ?= d3cd2ad563ad35a349339e899a8ed39f7e29dc02
-KUSTOMIZE_AGE_SUPPORT_COMMIT ?= 9cf05d7294a0947dbeb418f90cce549797ec4191
+KUSTOMIZE_AGE_SUPPORT_COMMIT ?= be09d792963483bf6c5f82aa6b36d522ee963634
 
 export GOPATH
 
