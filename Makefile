@@ -7,7 +7,7 @@ AGE_SYLR_REPO       ?= https://github.com/sylr/age.git
 KUSTOMIZE_SRC       ?= $(GOPATH)/src/sigs.k8s.io/kustomize/kustomize
 KUSTOMIZE_SYLR_REPO ?= https://github.com/sylr/kustomize.git
 
-KUSTOMIZE_AGE_SUPPORT_COMMIT ?= b8dce3201b944037333374bf551b84954132e946
+KUSTOMIZE_AGE_SUPPORT_COMMIT ?= kustomize/v4.1.3+age.1
 
 export GOPATH
 
@@ -34,6 +34,6 @@ kustomize-binary: $(KUSTOMIZE_SRC) kustomize-git-reset
 	  GOARCH=$$(cut -d / -f2 <<<$$platform); \
 	  OUTPUT=$$(basename $$PWD)-$$GOOS-$$GOARCH-$$(git rev-parse --short=8 HEAD); \
 	  test "$$GOOS" == "windows" && OUTPUT=$${OUTPUT}.exe; \
-	  GOOS=$$GOOS GOARCH=$$GOARCH go build -ldflags="-s -w" -trimpath -o $$OUTPUT .; \
+	  GOOS=$$GOOS GOARCH=$$GOARCH go build -ldflags="-s -X sigs.k8s.io/kustomize/api/provenance.version=$(shell git -C "$(KUSTOMIZE_SRC)/.." describe --tags | cut -d '/' -f2) -X sigs.k8s.io/kustomize/api/provenance.gitCommit=$(shell git -C "$(KUSTOMIZE_SRC)/.." rev-parse HEAD) -X sigs.k8s.io/kustomize/api/provenance.buildDate=$(shell date -u +%FT%TZ)" -trimpath -o $$OUTPUT .; \
 	  cp $$OUTPUT $(CURDIR)/bin; \
 	done
